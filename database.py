@@ -31,11 +31,11 @@ def create_table(connect_db, db_name):
         cursor = connect_db.cursor()
         cursor.execute("""CREATE TABLE IF NOT EXISTS """ + db_name + """ (
             Data text,
-            PriceGeral text,
-            PriceRegular text,
-            PriceMidGrade text,
-            PricePremium text,
-            PriceDiesel text
+            PriceGeral real,
+            PriceRegular real,
+            PriceMidGrade real,
+            PricePremium real,
+            PriceDiesel real
             )""")
     except:
         print("Error creating Table")
@@ -68,7 +68,7 @@ def search_data_test(connect_db, db_name):
     print("########### Test Query ###########")
     cursor.execute("SELECT * FROM " + db_name + " WHERE Data=:Data", {'Data': '02/13/1995'})
     print(cursor.fetchall())
-    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceGeral=:PriceGeral", {'PriceGeral': '1.132'})
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceGeral=:PriceGeral", {'PriceGeral': 1.132})
     print(cursor.fetchall())
 
 
@@ -76,4 +76,31 @@ def search_data_test(connect_db, db_name):
 def query1(connect_db, db_name):
     cursor = connect_db.cursor()
     cursor.execute("SELECT * FROM " + db_name + " WHERE Data=:Data", {'Data': '01/02/1995'})
+    return cursor.fetchall()
+
+
+# Make the query about the first data prices
+def query2(connect_db, db_name):
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE Data=:Data", {'Data': '01/25/2021'})
+    return cursor.fetchall()
+
+
+# Make the query about the date when each fuel passed a determined value
+def query4(connect_db, db_name, compared_value):
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceRegular >" + str(compared_value))
+    regulargrade = cursor.fetchone()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceMidGrade >" + str(compared_value))
+    midgrade = cursor.fetchone()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PricePremium >" + str(compared_value))
+    premiumgrade = cursor.fetchone()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceDiesel >" + str(compared_value))
+    diesel = cursor.fetchone()
+    return regulargrade, midgrade, premiumgrade, diesel
+
+# Make the query about the the most expensive fuel on a given date
+def query10(connect_db, db_name, date):
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE Data=:Data", {'Data': date})
     return cursor.fetchall()

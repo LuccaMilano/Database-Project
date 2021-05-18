@@ -2,7 +2,7 @@
 
 ## Requirements:
 - Python, preferebly 3.8
-- Packages used: sqlite3, tkinter
+- Packages used: sqlite3, tkinter, pandas
 
 ## Run:
 - "python3 main.py" in the console, from the project root
