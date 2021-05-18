@@ -27,7 +27,6 @@ class Interface:
         database.insert_data_on_database(connect_db, self.db_name, self.filename)
         database.close_connection(connect_db)
 
-
         ########### Test Query ###########
         connect_db = database.create_connection(self.db)
         database.search_data_test(connect_db, self.db_name)
@@ -37,7 +36,11 @@ class Interface:
 
     # Make query about the first price read
     def make_query1_onClick(self):
-        print("Placeholder")
+        connect_db = database.create_connection(self.db)
+        result_query1 = database.query1(connect_db, self.db_name)
+        database.close_connection(connect_db)
+
+        print("Preços na data mais antiga: ", result_query1)
     
 
     # Make query about the last price read

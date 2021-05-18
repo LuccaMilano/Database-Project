@@ -70,3 +70,10 @@ def search_data_test(connect_db, db_name):
     print(cursor.fetchall())
     cursor.execute("SELECT * FROM " + db_name + " WHERE PriceGeral=:PriceGeral", {'PriceGeral': '1.132'})
     print(cursor.fetchall())
+
+
+# Make the query about the first data prices
+def query1(connect_db, db_name):
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE Data=:Data", {'Data': '01/02/1995'})
+    return cursor.fetchall()
