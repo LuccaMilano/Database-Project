@@ -1,11 +1,6 @@
 import sqlite3
 import pandas as pd
-
-
-# Read a csv file and return its contents as a pandas dataframe
-def read_csv_file(filename):
-    csv_file = pd.read_csv(filename)
-    return csv_file
+import utilities
 
 
 # Close a database connection
@@ -47,7 +42,7 @@ def create_table(connect_db, db_name):
 def insert_data_on_database(connect_db, db_name, filename):
     cursor = connect_db.cursor()
     # Read the csv file and translate to a pandas dataframe, iterating over it's lines to insert them into the database
-    df = read_csv_file(filename) 
+    df = utilities.read_csv_file(filename) 
     for _, row in df.iterrows():
         cursor.execute(
             'SELECT * FROM ' + db_name + ' WHERE Data=:Data AND PriceGeral=:PriceGeral AND PriceRegular=:PriceRegular AND PriceMidGrade=:PriceMidGrade AND PricePremium=:PricePremium AND PriceDiesel=:PriceDiesel',
@@ -86,6 +81,16 @@ def query2(connect_db, db_name):
     return cursor.fetchall()
 
 
+# Make the query about the date when the average fuel  was the most expensive
+def query3(connect_db, db_name):
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT max(PriceGeral) FROM " + db_name)
+    last = cursor.fetchone()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceGeral =" + str(last[0]))
+    last_date = cursor.fetchone()
+    return last_date
+
+
 # Make the query about the date when each fuel passed a determined value
 def query4(connect_db, db_name, compared_value):
     cursor = connect_db.cursor()
@@ -98,6 +103,53 @@ def query4(connect_db, db_name, compared_value):
     cursor.execute("SELECT * FROM " + db_name + " WHERE PriceDiesel >" + str(compared_value))
     diesel = cursor.fetchone()
     return regulargrade, midgrade, premiumgrade, diesel
+
+
+# Make the query about the date when each fuel went below a determined value
+def query5(connect_db, db_name, compared_value):
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceRegular <" + str(compared_value))
+    regulargrade = cursor.fetchone()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceMidGrade <" + str(compared_value))
+    midgrade = cursor.fetchone()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PricePremium <" + str(compared_value))
+    premiumgrade = cursor.fetchone()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceDiesel <" + str(compared_value))
+    diesel = cursor.fetchone()
+    return regulargrade, midgrade, premiumgrade, diesel
+
+
+# Make the query about the date when the regular fuel surpassed diesel
+def query6(connect_db, db_name):
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceRegular > PriceDiesel")
+    result = cursor.fetchone()
+    return result
+
+
+# Make the query about the date when disel surpassed premium fuel
+def query7(connect_db, db_name):
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceDiesel > PricePremium")
+    result = cursor.fetchone()
+    return result
+
+
+# Make the query to know if regular fuel surpassed midgrade fuel one day
+def query8(connect_db, db_name):
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceRegular > PriceMidGrade")
+    result = cursor.fetchone()
+    return result
+
+
+# Make the query to know if midgrade fuel surpassed premium fuel one day
+def query9(connect_db, db_name):
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceMidGrade > PricePremium")
+    result = cursor.fetchone()
+    return result
+
 
 # Make the query about the the most expensive fuel on a given date
 def query10(connect_db, db_name, date):
