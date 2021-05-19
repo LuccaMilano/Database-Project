@@ -81,7 +81,7 @@ def query2(connect_db, db_name):
     return cursor.fetchall()
 
 
-# Make the query about the date when the average fuel  was the most expensive
+# Make the query about the date when the average fuel was the most expensive
 def query3(connect_db, db_name):
     cursor = connect_db.cursor()
     cursor.execute("SELECT max(PriceGeral) FROM " + db_name)
