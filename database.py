@@ -105,18 +105,18 @@ def query4(connect_db, db_name, compared_value):
     return regulargrade, midgrade, premiumgrade, diesel
 
 
-# Make the query about the date when each fuel went below a determined value
+# Make the query about the last date when each fuel went below a determined value
 def query5(connect_db, db_name, compared_value):
     cursor = connect_db.cursor()
     cursor.execute("SELECT * FROM " + db_name + " WHERE PriceRegular <" + str(compared_value))
-    regulargrade = cursor.fetchone()
+    regulargrade = cursor.fetchall()
     cursor.execute("SELECT * FROM " + db_name + " WHERE PriceMidGrade <" + str(compared_value))
-    midgrade = cursor.fetchone()
+    midgrade = cursor.fetchall()
     cursor.execute("SELECT * FROM " + db_name + " WHERE PricePremium <" + str(compared_value))
-    premiumgrade = cursor.fetchone()
+    premiumgrade = cursor.fetchall()
     cursor.execute("SELECT * FROM " + db_name + " WHERE PriceDiesel <" + str(compared_value))
-    diesel = cursor.fetchone()
-    return regulargrade, midgrade, premiumgrade, diesel
+    diesel = cursor.fetchall()
+    return regulargrade[-1], midgrade[-1], premiumgrade[-1], diesel[-1]
 
 
 # Make the query about the date when the regular fuel surpassed diesel

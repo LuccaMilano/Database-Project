@@ -87,7 +87,7 @@ class Interface:
             print("Diesel ainda não ultrapassou o valor", compared_value)
 
     
-    # Make query about the date when each fuel went below a determined value
+    # Make query about the last date when each fuel went below a determined value
     def make_query5_onClick(self):
         compared_value = float(self.entry_query5.get())
 
@@ -95,21 +95,20 @@ class Interface:
         regulargrade, midgrade, premiumgrade, diesel = database.query5(connect_db, self.db_name, compared_value)
         database.close_connection(connect_db)
 
-        print("\nResultado da Query:\n", regulargrade, midgrade, premiumgrade, diesel)
         if regulargrade:
-            print("Data em que o combustível Regular estava abaixo de", compared_value, ":", regulargrade[0])
+            print("Última data em que o combustível Regular estava abaixo de", compared_value, ":", regulargrade[0])
         else:
             print("Combustível Regular nunca esteve abaixo do valor", compared_value)
         if midgrade:
-            print("Data em que o combustível MidGrade estava abaixo de", compared_value, ":", midgrade[0])
+            print("Última data em que o combustível MidGrade estava abaixo de", compared_value, ":", midgrade[0])
         else:
             print("Combustível MidGrade nunca esteve abaixo do valor", compared_value)
         if premiumgrade:
-            print("Data em que o combustível Premium estava abaixo de", compared_value, ":", premiumgrade[0])
+            print("Última data em que o combustível Premium estava abaixo de", compared_value, ":", premiumgrade[0])
         else:
             print("Combustível Premium nunca esteve abaixo do valor", compared_value)
         if diesel:
-            print("Data em que o Diesel estava abaixo de", compared_value, ":", diesel[0])
+            print("Última data em que o Diesel estava abaixo de", compared_value, ":", diesel[0])
         else:
             print("Diesel nunca esteve abaixo do valor", compared_value)
 
@@ -211,7 +210,7 @@ class Interface:
                                       command=self.make_query4_onClick, )
         self.button_query4.pack(pady=5)
 
-         # Button to take the date when each fuel went below a determined value
+         # Button to take the last date when each fuel went below a determined value
         self.label_query5 = Label(menu, text="Valor a ser utilizado",)
         self.label_query5.pack(pady=8)
         self.entry_query5 = Entry(menu)
