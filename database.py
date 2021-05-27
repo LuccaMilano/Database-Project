@@ -2,6 +2,9 @@ import sqlite3
 import pandas as pd
 import utilities
 
+# Define variables for the interval of the plot on adv_query3 and adv_query4
+BOTTOM_VALUE = 10
+UPPER_VALUE = 11
 
 # Close a database connection
 def close_connection(connect_db):
@@ -217,7 +220,7 @@ def adv_query3(connect_db, db_name):
     max_value = max(axis_value[1])
     max_index = axis_value[1].index(max_value)
 
-    for i in range(max_index - 5, max_index + 6):
+    for i in range(max_index - BOTTOM_VALUE, max_index + UPPER_VALUE):
         max_values_axis[1].append(axis_value[1][i])
         date_values[0].append(axis_value[0][i])
 
@@ -225,7 +228,7 @@ def adv_query3(connect_db, db_name):
     max_value = max(axis_value[2])
     max_index = axis_value[2].index(max_value)
 
-    for i in range(max_index - 5, max_index + 6):
+    for i in range(max_index - BOTTOM_VALUE, max_index + UPPER_VALUE):
         max_values_axis[2].append(axis_value[2][i])
         date_values[1].append(axis_value[0][i])
 
@@ -233,7 +236,7 @@ def adv_query3(connect_db, db_name):
     max_value = max(axis_value[3])
     max_index = axis_value[3].index(max_value)
 
-    for i in range(max_index - 5, max_index + 6):
+    for i in range(max_index - BOTTOM_VALUE, max_index + UPPER_VALUE):
         max_values_axis[3].append(axis_value[3][i])
         date_values[2].append(axis_value[0][i])
 
@@ -241,7 +244,7 @@ def adv_query3(connect_db, db_name):
     max_value = max(axis_value[4])
     max_index = axis_value[4].index(max_value)
 
-    for i in range(max_index - 5, max_index + 6):
+    for i in range(max_index - BOTTOM_VALUE, max_index + UPPER_VALUE):
         max_values_axis[4].append(axis_value[4][i])
         date_values[3].append(axis_value[0][i])
 
@@ -249,7 +252,7 @@ def adv_query3(connect_db, db_name):
     max_value = max(axis_value[5])
     max_index = axis_value[5].index(max_value)
 
-    for i in range(max_index - 5, max_index + 6):
+    for i in range(max_index - BOTTOM_VALUE, max_index + UPPER_VALUE):
         max_values_axis[5].append(axis_value[5][i])
         date_values[4].append(axis_value[0][i])
 
@@ -279,7 +282,7 @@ def adv_query4(connect_db, db_name):
     min_value = min(axis_value[1])
     min_index = axis_value[1].index(min_value)
 
-    for i in range(min_index - 5, min_index + 6):
+    for i in range(min_index - BOTTOM_VALUE, min_index + UPPER_VALUE):
         min_values_axis[1].append(axis_value[1][i])
         date_values[0].append(axis_value[0][i])
 
@@ -287,7 +290,7 @@ def adv_query4(connect_db, db_name):
     min_value = min(axis_value[2])
     min_index = axis_value[2].index(min_value)
 
-    for i in range(min_index - 5, min_index + 6):
+    for i in range(min_index - BOTTOM_VALUE, min_index + UPPER_VALUE):
         min_values_axis[2].append(axis_value[2][i])
         date_values[1].append(axis_value[0][i])
 
@@ -295,7 +298,7 @@ def adv_query4(connect_db, db_name):
     min_value = min(axis_value[3])
     min_index = axis_value[3].index(min_value)
 
-    for i in range(min_index - 5, min_index + 6):
+    for i in range(min_index - BOTTOM_VALUE, min_index + UPPER_VALUE):
         min_values_axis[3].append(axis_value[3][i])
         date_values[2].append(axis_value[0][i])
 
@@ -303,7 +306,7 @@ def adv_query4(connect_db, db_name):
     min_value = min(axis_value[4])
     min_index = axis_value[4].index(min_value)
 
-    for i in range(min_index - 5, min_index + 6):
+    for i in range(min_index - BOTTOM_VALUE, min_index + UPPER_VALUE):
         min_values_axis[4].append(axis_value[4][i])
         date_values[3].append(axis_value[0][i])
 
@@ -311,7 +314,7 @@ def adv_query4(connect_db, db_name):
     min_value = min(axis_value[5])
     min_index = axis_value[5].index(min_value)
 
-    for i in range(min_index - 5, min_index + 6):
+    for i in range(min_index - BOTTOM_VALUE, min_index + UPPER_VALUE):
         min_values_axis[5].append(axis_value[5][i])
         date_values[4].append(axis_value[0][i])
 
