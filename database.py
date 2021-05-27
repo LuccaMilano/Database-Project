@@ -156,3 +156,197 @@ def query10(connect_db, db_name, date):
     cursor = connect_db.cursor()
     cursor.execute("SELECT * FROM " + db_name + " WHERE Data=:Data", {'Data': date})
     return cursor.fetchall()
+
+
+# Make the query about plot of all fuel prices
+def adv_query1(connect_db, db_name):
+    x_value = []
+    y_value = [[] for _ in range(5)]
+
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name)
+    all_values = cursor.fetchall()
+
+    for value in all_values:
+        x_value.append(value[0])
+        y_value[0].append(value[1])
+        y_value[1].append(value[2])
+        y_value[2].append(value[3])
+        y_value[3].append(value[4])
+        y_value[4].append(value[5])
+
+    return x_value, y_value
+
+
+# Make the query about the prices of all grades fuel that are below a certain value
+def adv_query2(connect_db, db_name, compared_value):
+    x_value = []
+    y_value = []
+    
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceGeral <" + str(compared_value))
+    allgrades = cursor.fetchall()
+
+    for value in allgrades:
+        x_value.append(value[0])
+        y_value.append(value[1])
+
+    return x_value, y_value
+
+
+# Make the query about plotting the highest value achieved by each fuels
+def adv_query3(connect_db, db_name):
+    axis_value = [[] for _ in range(6)]
+    max_values_axis = [[] for _ in range(6)]
+    date_values = [[] for _ in range(5)]
+    
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name)
+    all_values = cursor.fetchall()
+
+    for value in all_values:
+        axis_value[0].append(value[0])
+        axis_value[1].append(value[1])
+        axis_value[2].append(value[2])
+        axis_value[3].append(value[3])
+        axis_value[4].append(value[4])
+        axis_value[5].append(value[5])
+
+    # Find the max value and its surroundings
+    # Max of All Grades
+    max_value = max(axis_value[1])
+    max_index = axis_value[1].index(max_value)
+
+    for i in range(max_index - 5, max_index + 6):
+        max_values_axis[1].append(axis_value[1][i])
+        date_values[0].append(axis_value[0][i])
+
+    # Max of Regular Grade
+    max_value = max(axis_value[2])
+    max_index = axis_value[2].index(max_value)
+
+    for i in range(max_index - 5, max_index + 6):
+        max_values_axis[2].append(axis_value[2][i])
+        date_values[1].append(axis_value[0][i])
+
+    # Max of Mid Grade
+    max_value = max(axis_value[3])
+    max_index = axis_value[3].index(max_value)
+
+    for i in range(max_index - 5, max_index + 6):
+        max_values_axis[3].append(axis_value[3][i])
+        date_values[2].append(axis_value[0][i])
+
+    # Max of Premium Grade
+    max_value = max(axis_value[4])
+    max_index = axis_value[4].index(max_value)
+
+    for i in range(max_index - 5, max_index + 6):
+        max_values_axis[4].append(axis_value[4][i])
+        date_values[3].append(axis_value[0][i])
+
+    # Max of Diesel
+    max_value = max(axis_value[5])
+    max_index = axis_value[5].index(max_value)
+
+    for i in range(max_index - 5, max_index + 6):
+        max_values_axis[5].append(axis_value[5][i])
+        date_values[4].append(axis_value[0][i])
+
+    return date_values, max_values_axis
+
+
+# Make the query about plotting the lowest value achieved by each fuels
+def adv_query4(connect_db, db_name):
+    axis_value = [[] for _ in range(6)]
+    min_values_axis = [[] for _ in range(6)]
+    date_values = [[] for _ in range(5)]
+    
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name)
+    all_values = cursor.fetchall()
+
+    for value in all_values:
+        axis_value[0].append(value[0])
+        axis_value[1].append(value[1])
+        axis_value[2].append(value[2])
+        axis_value[3].append(value[3])
+        axis_value[4].append(value[4])
+        axis_value[5].append(value[5])
+
+    # Find the minimum value and its surroundings
+    # Min of All Grades
+    min_value = min(axis_value[1])
+    min_index = axis_value[1].index(min_value)
+
+    for i in range(min_index - 5, min_index + 6):
+        min_values_axis[1].append(axis_value[1][i])
+        date_values[0].append(axis_value[0][i])
+
+    # Min of Regular Grade
+    min_value = min(axis_value[2])
+    min_index = axis_value[2].index(min_value)
+
+    for i in range(min_index - 5, min_index + 6):
+        min_values_axis[2].append(axis_value[2][i])
+        date_values[1].append(axis_value[0][i])
+
+    # Min of Mid Grade
+    min_value = min(axis_value[3])
+    min_index = axis_value[3].index(min_value)
+
+    for i in range(min_index - 5, min_index + 6):
+        min_values_axis[3].append(axis_value[3][i])
+        date_values[2].append(axis_value[0][i])
+
+    # Min of Premium Grade
+    min_value = min(axis_value[4])
+    min_index = axis_value[4].index(min_value)
+
+    for i in range(min_index - 5, min_index + 6):
+        min_values_axis[4].append(axis_value[4][i])
+        date_values[3].append(axis_value[0][i])
+
+    # Min of Diesel
+    min_value = min(axis_value[5])
+    min_index = axis_value[5].index(min_value)
+
+    for i in range(min_index - 5, min_index + 6):
+        min_values_axis[5].append(axis_value[5][i])
+        date_values[4].append(axis_value[0][i])
+
+    return date_values, min_values_axis
+
+
+# Make the query about all the times when Diesel was cheaper than Regular fuel
+def adv_query5(connect_db, db_name):
+    x_value = []
+    y_value = [[] for _ in range(2)]
+    
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceDiesel < PriceRegular")
+    all_values = cursor.fetchall()
+
+    for value in all_values:
+        x_value.append(value[0])
+        y_value[0].append(value[2])
+        y_value[1].append(value[5])
+
+    return x_value, y_value
+
+
+# Make the query about all the times when Premium fuel was cheaper than Diesel
+def adv_query6(connect_db, db_name):
+    x_value = []
+    y_value = [[] for _ in range(2)]
+    
+    cursor = connect_db.cursor()
+    cursor.execute("SELECT * FROM " + db_name + " WHERE PriceDiesel > PricePremium")
+    all_values = cursor.fetchall()
+
+    for value in all_values:
+        x_value.append(value[0])
+        y_value[0].append(value[4])
+        y_value[1].append(value[5])
+
+    return x_value, y_value

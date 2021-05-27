@@ -1,6 +1,9 @@
 from tkinter import *
+from tkinter import ttk
 import database
 import utilities
+import matplotlib.pyplot as plt
+import datetime
 
 
 class Interface:
@@ -9,6 +12,10 @@ class Interface:
         self.db = 'gasoline_and_diesel_prices.db'
         self.filename = 'data/Gasoline_and_Diesel_Prices.csv'
         self.db_name = utilities.scrub('Gasoline_and_Diesel_Prices')
+        # GUI
+        self.menu = Tk()
+        self.menu.title("U.S. Gasoline and Diesel Prices Database")
+        self.menu.geometry("600x680")
 
 
     # Insert/Update data to the database on click
@@ -177,75 +184,251 @@ class Interface:
         print("\nResultado da Query:\n", result_query[0])
         print("Combustível mais caro na data", result_query[0][0], ":", fuel, "\nPreço: U$", price)
 
-    def create_interface(self):
-        # GUI
-        menu = Tk()
-        menu.title("U.S. Gasoline and Diesel Prices Database")
-        menu.geometry("600x650")
 
+    def create_interface(self):
         # Button to insert/update data to the sqlite database 
-        self.button_data = Button(menu, text="Inserir dados ao Banco de Dados", command=self.insert_data_onClick,)
+        self.button_data = Button(self.menu, text="Inserir dados ao Banco de Dados", command=self.insert_data_onClick,)
         self.button_data.pack(pady=5)
 
         # Button to make the query with the first price read
-        self.button_query1 = Button(menu, text="Preço na data mais antiga", command=self.make_query1_onClick,)
+        self.button_query1 = Button(self.menu, text="Preço na data mais antiga", command=self.make_query1_onClick,)
         self.button_query1.pack(pady=5)
 
         # Button to take the most recent price read
-        self.button_query2 = Button(menu, text="Preço na data mais recente",
+        self.button_query2 = Button(self.menu, text="Preço na data mais recente",
                                           command=self.make_query2_onClick,)
         self.button_query2.pack(pady=5)
 
         # Button to take the date when the average fuel was the most expensive
-        self.button_query3 = Button(menu, text="Data em que o combustível, em geral, esteve mais caro",
+        self.button_query3 = Button(self.menu, text="Data em que o combustível, em geral, esteve mais caro",
                                       command=self.make_query3_onClick, )
         self.button_query3.pack(pady=5)
 
         # Button to take the date when each fuel passed a determined value
-        self.label_query4 = Label(menu, text="Valor a ser utilizado",)
+        self.label_query4 = Label(self.menu, text="Valor a ser utilizado",)
         self.label_query4.pack(pady=8)
-        self.entry_query4 = Entry(menu)
+        self.entry_query4 = Entry(self.menu)
         self.entry_query4.pack()
-        self.button_query4 = Button(menu, text="Data em que cada combustível ultrapassou o valor",
+        self.button_query4 = Button(self.menu, text="Data em que cada combustível ultrapassou o valor",
                                       command=self.make_query4_onClick, )
         self.button_query4.pack(pady=5)
 
          # Button to take the last date when each fuel went below a determined value
-        self.label_query5 = Label(menu, text="Valor a ser utilizado",)
+        self.label_query5 = Label(self.menu, text="Valor a ser utilizado",)
         self.label_query5.pack(pady=8)
-        self.entry_query5 = Entry(menu)
+        self.entry_query5 = Entry(self.menu)
         self.entry_query5.pack()
-        self.button_query5 = Button(menu, text="Data em que cada combustível ficou menor que o valor",
+        self.button_query5 = Button(self.menu, text="Data em que cada combustível ficou menor que o valor",
                                       command=self.make_query5_onClick, )
         self.button_query5.pack(pady=5)
 
         # Button to take the date when the regular fuel surpassed diesel
-        self.button_query6 = Button(menu, text="Data em que o combustível regular superou o diesel",
+        self.button_query6 = Button(self.menu, text="Data em que o combustível regular superou o diesel",
                                       command=self.make_query6_onClick, )
         self.button_query6.pack(pady=5)
 
         # Button to take the date when disel surpassed premium fuel
-        self.button_query7 = Button(menu, text="Data em que o diesel superou o combustível Premium",
+        self.button_query7 = Button(self.menu, text="Data em que o diesel superou o combustível Premium",
                                       command=self.make_query7_onClick, )
         self.button_query7.pack(pady=5)
 
         # Button to know if regular fuel surpassed midgrade fuel one day
-        self.button_query8 = Button(menu, text="Combustível Regular superou MidGrade em alguma data?",
+        self.button_query8 = Button(self.menu, text="Combustível Regular superou MidGrade em alguma data?",
                                       command=self.make_query8_onClick, )
         self.button_query8.pack(pady=5)
 
         # Button to know if midgrade fuel surpassed premium fuel one day
-        self.button_query9 = Button(menu, text="Combustível MidGrade superou Premium em alguma data?",
+        self.button_query9 = Button(self.menu, text="Combustível MidGrade superou Premium em alguma data?",
                                       command=self.make_query9_onClick, )
         self.button_query9.pack(pady=5)
 
         # Button to take the most pricey fuel on a given date
-        self.label_query10 = Label(menu, text="Data a ser comparada",)
+        self.label_query10 = Label(self.menu, text="Data a ser comparada",)
         self.label_query10.pack(pady=8)
-        self.entry_query10 = Entry(menu)
+        self.entry_query10 = Entry(self.menu)
         self.entry_query10.pack()
-        self.button_query10 = Button(menu, text="Combustível mais caro na data",
+        self.button_query10 = Button(self.menu, text="Combustível mais caro na data",
                                  command=self.make_query10_onClick, )
         self.button_query10.pack(pady=5)
 
-        menu.mainloop()
+        # Button to open window for advanced operations
+        self.advanced_operations = Button(self.menu, text="Operações Avançadas",
+                                 command=self.advanced_operations_onClick, )
+        self.advanced_operations.pack(pady=5)
+
+        self.menu.mainloop()
+
+
+    def advanced_operations_onClick(self):
+        newWindow = Toplevel(self.menu)
+        newWindow.title("U.S. Gasoline and Diesel Prices Avanced Operations")
+        newWindow.geometry("600x680")
+
+        # Button to plot the prices of all fuels measured
+        self.adv_query1 = Button(newWindow, text = 'Plot preço de todos combustíveis', command = self.make_adv_query1, )
+        self.adv_query1.pack(pady=5)
+
+        # Button to plot the prices of all grades fuel that are below a certain value
+        self.label_adv_query2 = Label(newWindow, text="Preço a ser comparado",)
+        self.label_adv_query2.pack(pady=8)
+        self.entry_adv_query2 = Entry(newWindow)
+        self.entry_adv_query2.pack()
+        self.adv_query2 = Button(newWindow, text = 'Plot de todos períodos em que o combustível em geral estava abaixo do valor', command = self.make_adv_query2, )
+        self.adv_query2.pack(pady=5)
+
+        # Button to plot the highest value achieved by each fuel
+        self.adv_query3 = Button(newWindow, text = 'Plot do pico alcançado por cada combustível', command = self.make_adv_query3, )
+        self.adv_query3.pack(pady=5)
+
+        # Button to plot the lowest value achieved by each fuel
+        self.adv_query4 = Button(newWindow, text = 'Plot do vale alcançado por cada combustível', command = self.make_adv_query4, )
+        self.adv_query4.pack(pady=5)
+
+        # Button to plot all the times when Diesel was cheaper than Regular fuel
+        self.adv_query5 = Button(newWindow, text = 'Plot preço de Diesel x Regular, quando Diesel custou mais caro', command = self.make_adv_query5, )
+        self.adv_query5.pack(pady=5)
+
+        # Button to plot all the times when Premium fuel was cheaper than Diesel
+        self.adv_query6 = Button(newWindow, text = 'Plot preço de Diesel x Premium, quando Premium custou mais caro', command = self.make_adv_query6, )
+        self.adv_query6.pack(pady=5)
+        
+        # Button to quit all windows
+        self.quitButton = Button(newWindow, text = 'Quit', command = self.close_all, )
+        self.quitButton.pack(pady=5)
+    
+
+    # Close all windows
+    def close_all(self):
+        self.menu.destroy()
+
+
+    # Plot the prices of all fuels measured
+    def make_adv_query1(self):
+        connect_db = database.create_connection(self.db)
+        x_value, y_value = database.adv_query1(connect_db, self.db_name)
+        database.close_connection(connect_db)
+
+        x_value_formatted = [datetime.datetime.strptime(d,"%m/%d/%Y").date() for d in x_value]
+
+        plt.plot(x_value_formatted, y_value[0], label = "All Grades Prices")
+        plt.plot(x_value_formatted, y_value[1], label = "Regular Grade Prices")
+        plt.plot(x_value_formatted, y_value[2], label = "Mid Grade Prices")
+        plt.plot(x_value_formatted, y_value[3], label = "Premium Grade Prices")
+        plt.plot(x_value_formatted, y_value[4], label = "Diesel Prices")
+
+        plt.xlabel('Date')
+        plt.ylabel('Price of the fuel')
+        plt.title('Prices of all fuels along the measured time')
+        plt.legend()
+        plt.show()
+
+    
+    # Plot the prices of all grades fuel that are below a certain value
+    def make_adv_query2(self):
+        compared_value = self.entry_adv_query2.get()
+
+        connect_db = database.create_connection(self.db)
+        x_value, y_value = database.adv_query2(connect_db, self.db_name, compared_value)
+        database.close_connection(connect_db)
+
+        x_value_formatted = [datetime.datetime.strptime(d,"%m/%d/%Y").date() for d in x_value]
+        
+        plt.plot(x_value_formatted, y_value, label = "All Grades Prices")
+
+        plt.xlabel('Date')
+        plt.ylabel('Price of the fuel')
+        plt.title('Prices of All Grades fuel below a certain value')
+        plt.legend()
+        plt.show()
+
+
+    # Plot the highest value achieved by each fuel
+    def make_adv_query3(self):
+        connect_db = database.create_connection(self.db)
+        x_value, y_value = database.adv_query3(connect_db, self.db_name)
+        database.close_connection(connect_db)
+
+        x_value_formatted = [datetime.datetime.strptime(d,"%m/%d/%Y").date() for d in x_value[0]]
+        plt.plot(x_value_formatted, y_value[1], label = "All Grades Prices")
+        
+        x_value_formatted = [datetime.datetime.strptime(d,"%m/%d/%Y").date() for d in x_value[1]]
+        plt.plot(x_value_formatted, y_value[2], label = "Regular Grade Prices")
+        
+        x_value_formatted = [datetime.datetime.strptime(d,"%m/%d/%Y").date() for d in x_value[2]]
+        plt.plot(x_value_formatted, y_value[3], label = "Mid Grade Prices")
+        
+        x_value_formatted = [datetime.datetime.strptime(d,"%m/%d/%Y").date() for d in x_value[3]]
+        plt.plot(x_value_formatted, y_value[4], label = "Premium Grade Prices")
+        
+        x_value_formatted = [datetime.datetime.strptime(d,"%m/%d/%Y").date() for d in x_value[4]]
+        plt.plot(x_value_formatted, y_value[5], label = "Diesel Prices")
+        
+        plt.xlabel('Date')
+        plt.ylabel('Price of the fuel')
+        plt.title('Prices of all fuels peaks')
+        plt.legend()
+        plt.show()
+    
+
+    # Plot the lowest value achieved by each fuel
+    def make_adv_query4(self):
+        connect_db = database.create_connection(self.db)
+        x_value, y_value = database.adv_query4(connect_db, self.db_name)
+        database.close_connection(connect_db)
+
+        x_value_formatted = [datetime.datetime.strptime(d,"%m/%d/%Y").date() for d in x_value[0]]
+        plt.plot(x_value_formatted, y_value[1], label = "All Grades Prices")
+        
+        x_value_formatted = [datetime.datetime.strptime(d,"%m/%d/%Y").date() for d in x_value[1]]
+        plt.plot(x_value_formatted, y_value[2], label = "Regular Grade Prices")
+        
+        x_value_formatted = [datetime.datetime.strptime(d,"%m/%d/%Y").date() for d in x_value[2]]
+        plt.plot(x_value_formatted, y_value[3], label = "Mid Grade Prices")
+        
+        x_value_formatted = [datetime.datetime.strptime(d,"%m/%d/%Y").date() for d in x_value[3]]
+        plt.plot(x_value_formatted, y_value[4], label = "Premium Grade Prices")
+        
+        x_value_formatted = [datetime.datetime.strptime(d,"%m/%d/%Y").date() for d in x_value[4]]
+        plt.plot(x_value_formatted, y_value[5], label = "Diesel Prices")
+        
+        plt.xlabel('Date')
+        plt.ylabel('Price of the fuel')
+        plt.title('Prices of all fuels vales')
+        plt.legend()
+        plt.show()
+    
+
+    # Plot all the times when Diesel was cheaper than Regular fuel
+    def make_adv_query5(self):
+        connect_db = database.create_connection(self.db)
+        x_value, y_value = database.adv_query5(connect_db, self.db_name)
+        database.close_connection(connect_db)
+
+        x_value_formatted = [datetime.datetime.strptime(d,"%m/%d/%Y").date() for d in x_value]
+
+        plt.plot(x_value_formatted, y_value[0], label = "Regular Grade Prices")
+        plt.plot(x_value_formatted, y_value[1], label = "Diesel Prices")
+
+        plt.xlabel('Date')
+        plt.ylabel('Price of the fuel')
+        plt.title('Prices of Disel x Regular fuel, when Diesel was cheaper')
+        plt.legend()
+        plt.show()
+
+
+    # Plot all the times when Premium fuel was cheaper than Diesel
+    def make_adv_query6(self):
+        connect_db = database.create_connection(self.db)
+        x_value, y_value = database.adv_query6(connect_db, self.db_name)
+        database.close_connection(connect_db)
+
+        x_value_formatted = [datetime.datetime.strptime(d,"%m/%d/%Y").date() for d in x_value]
+
+        plt.plot(x_value_formatted, y_value[0], label = "Premium Grade Prices")
+        plt.plot(x_value_formatted, y_value[1], label = "Diesel Prices")
+
+        plt.xlabel('Date')
+        plt.ylabel('Price of the fuel')
+        plt.title('Prices of Disel x Premium fuel, when Premium was cheaper')
+        plt.legend()
+        plt.show()
