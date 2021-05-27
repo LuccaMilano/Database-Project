@@ -353,3 +353,4 @@ def adv_query6(connect_db, db_name):
         y_value[1].append(value[5])
 
     return x_value, y_value
+

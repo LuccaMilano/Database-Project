@@ -156,7 +156,7 @@ class Interface:
             print("Preço do combustível regular na data em questão: U$", result_query[2])
             print("Preço do combustível midgrade na data em questão: U$", result_query[3])
         else:
-            print("O preço do combustível regular não superou o do combustível midgrade até o prsente momento")
+            print("O preço do combustível regular não superou o do combustível midgrade até o presente momento")
 
 
      # Make query to know if midgrade fuel surpassed premium fuel one day
